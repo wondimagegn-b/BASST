@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+outputs/
+*.log
+*.tmp
+
+OpenFace-3.0/
+checkpoints/
+
+.DS_Store
+Thumbs.db
