@@ -2,30 +2,16 @@
 
 Official code for **BASST** for ASD video classification from facial videos.
 
-This repository is released for two public use cases:
-
-1. **Testing / inference** on a user-provided dataset using the released pretrained checkpoint `best.pth`
-2. **Fine-tuning** on a user-provided dataset starting from the released pretrained checkpoint `best.pth`
-
-The original child dataset used in this work is **not public** due to privacy restrictions.  
-To use this code, prepare your own dataset in the same format described below.
+The original child dataset used in this work is **not public** due to privacy restrictions. To use this repository, prepare your own dataset in the format described below.
 
 ---
 
-## Overview
+## What this repository supports
 
-This repository provides:
+This repository supports two use cases:
 
-- the BASST model code
-- the OpenFace-based auxiliary feature extraction path used in the final model
-- training and testing scripts
-- support for fine-tuning from the released pretrained checkpoint `best.pth`
-
-The public workflow is:
-
-- use `checkpoints/best.pth` to **test**
-- or use `checkpoints/best.pth` to **fine-tune** on a new dataset
-- after fine-tuning, use the newly generated checkpoint for evaluation
+1. **Testing / inference** on a user-provided dataset using the released pretrained checkpoint `best.pth`
+2. **Fine-tuning** on a user-provided dataset starting from the released pretrained checkpoint `best.pth`
 
 ---
 
@@ -69,7 +55,7 @@ BASST/
 
 ## Installation
 
-Create your environment and install the required packages:
+Install the required packages:
 
 ```bash
 pip install -r requirements.txt
@@ -103,16 +89,14 @@ BASST/
 
 ## Pretrained checkpoint
 
-Place the released pretrained BASST checkpoint here:
+Download `best.pth` from the [GitHub Releases page](https://github.com/wondimagegn-b/BASST/releases/tag/v1.0) and place it in:
 
 ```text
 checkpoints/best.pth
-```
 
-This public checkpoint can be used in two ways:
-
-- as the starting checkpoint for **fine-tuning**
-- as the checkpoint for **testing / inference**
+This checkpoint can be used for both:
+- **testing / inference**
+- **fine-tuning** on a new dataset
 
 ---
 
@@ -139,7 +123,7 @@ Inside each sample folder:
 ...
 ```
 
-### Split CSV format
+### CSV split format
 
 Each CSV file must contain two columns:
 
@@ -156,7 +140,6 @@ sample_003,1
 ```
 
 Where:
-
 - `sample_path` is the relative path to the sample folder with respect to `data/clips`
 - `label` is the class label
 
@@ -166,7 +149,7 @@ If you use:
 --data_path data/clips
 ```
 
-then the CSV row
+then the row
 
 ```text
 sample_001,1
@@ -189,7 +172,7 @@ If you use a different label meaning, keep it consistent across all splits.
 
 ---
 
-## Fine-tuning on a new dataset
+## Fine-tuning
 
 To fine-tune BASST on your own dataset using the released pretrained checkpoint:
 
@@ -198,13 +181,6 @@ To fine-tune BASST on your own dataset using the released pretrained checkpoint:
 ```bat
 python run_folds.py --mode train --folds 1 --data_path "data\clips" --train_label_template "data\splits\train_fold_{fold}.csv" --test_label_template "data\splits\test_fold_{fold}.csv" --output_dir "outputs" --finetune_path "checkpoints\best.pth" --openface_repo_root "OpenFace-3.0" --nb_classes 2 --input_size 224 --short_side_size 224 --num_frames 16 --sampling_rate 1 --batch_size 4 --eval_batch_size 4 --epochs 50 --lr 1e-5
 ```
-
-This will:
-
-- initialize BASST from `checkpoints/best.pth`
-- fine-tune on your dataset
-- evaluate on the specified test split
-- save outputs to `outputs/fold_1/`
 
 The best checkpoint after fine-tuning will be saved as:
 
@@ -224,7 +200,7 @@ To evaluate a checkpoint on your own dataset:
 python run_folds.py --mode test --folds 1 --data_path "data\clips" --train_label_template "data\splits\train_fold_{fold}.csv" --test_label_template "data\splits\test_fold_{fold}.csv" --output_dir "outputs" --checkpoint_path "checkpoints\best.pth" --openface_repo_root "OpenFace-3.0" --nb_classes 2 --input_size 224 --short_side_size 224 --num_frames 16 --sampling_rate 1 --eval_batch_size 4
 ```
 
-If you want to test a checkpoint produced after fine-tuning, replace:
+To test a checkpoint produced after fine-tuning, replace:
 
 ```text
 checkpoints\best.pth
@@ -238,7 +214,7 @@ outputs\fold_1\best.pth
 
 ---
 
-## Running multiple folds
+## Multiple folds
 
 You can run multiple folds by listing them after `--folds`.
 
@@ -256,7 +232,7 @@ outputs/fold_2/
 outputs/fold_3/
 ```
 
-and a summary file:
+and:
 
 ```text
 outputs/summary.json
@@ -282,9 +258,8 @@ outputs/summary.json
 
 - The original child dataset is not released for privacy reasons.
 - Users must prepare their own dataset in the required frame-folder and CSV format.
-- `best.pth` is the public pretrained BASST checkpoint provided for transfer learning and evaluation.
 - OpenFace-3.0 must be downloaded separately and placed in the repository as described above.
-- In the current script interface, both `--train_label_template` and `--test_label_template` are still required arguments, even when running in `--mode test`.
+- In the current script interface, both `--train_label_template` and `--test_label_template` are required arguments, even in `--mode test`.
 
 ---
 
@@ -293,6 +268,5 @@ outputs/summary.json
 If you use this code, please cite the corresponding BASST paper.
 
 ```text
-[Multi-Cue Behavior-Aware Transformer for Autism Spectrum Disorder Screening from
-Facial Videos]
+[Multi-Cue Behavior-Aware Transformer for Autism Spectrum Disorder Screening from Facial Videos]
 ```
