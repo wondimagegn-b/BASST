@@ -6,13 +6,6 @@ The original child dataset used in this work is **not public** due to privacy re
 
 ---
 
-## What this repository supports
-
-This repository supports two use cases:
-
-1. **Testing / inference** on a user-provided dataset using the released pretrained checkpoint `best.pth`
-2. **Fine-tuning** on a user-provided dataset starting from the released pretrained checkpoint `best.pth`
-
 ---
 
 ## Repository structure
@@ -53,9 +46,33 @@ BASST/
 
 ---
 
+## Tested environment
+
+This code was tested with:
+
+- Python 3.9.22
+- PyTorch 1.13.1+cu117
+- torchvision 0.14.1+cu117
+- timm 0.6.13
+- einops 0.6.1
+- numpy 1.24.2
+- pandas 2.0.1
+- Pillow 10.3.0
+- opencv-python 4.11.0
+
+---
+
 ## Installation
 
-Install the required packages:
+Create your environment with Python 3.9.
+
+Install PyTorch and torchvision first:
+
+```bash
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
+```
+
+Then install the remaining dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -89,10 +106,11 @@ BASST/
 
 ## Pretrained checkpoint
 
-Download `best.pth` from the [GitHub Releases page](https://github.com/wondimagegn-b/BASST/releases/tag/v1.0) and place it in:
+Download `best.pth` from the [GitHub Releases page](https://github.com/wondimagegn-b/BASST/releases) and place it in:
 
 ```text
 checkpoints/best.pth
+```
 
 This checkpoint can be used for both:
 - **testing / inference**
